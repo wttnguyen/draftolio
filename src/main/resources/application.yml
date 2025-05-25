@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: draftolio
+
+riot:
+  api:
+    base-url: api.riotgames.com
+    key: ${RIOT_API_KEY}

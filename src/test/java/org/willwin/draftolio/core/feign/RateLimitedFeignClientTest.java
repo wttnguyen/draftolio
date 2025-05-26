@@ -12,8 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.willwin.draftolio.core.exception.ratelimit.RateLimitExceededException;
-import org.willwin.draftolio.core.service.feign.FeignResponseRateLimiterService;
+import org.willwin.draftolio.core.ratelimit.RateLimitExceededException;
 
 import java.io.IOException;
 import java.util.Collections;

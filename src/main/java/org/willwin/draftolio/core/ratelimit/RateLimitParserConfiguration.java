@@ -1,11 +1,11 @@
-package org.willwin.draftolio.core.configuration.ratelimit;
+package org.willwin.draftolio.core.ratelimit;
 
 import lombok.NonNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.willwin.draftolio.core.service.ratelimit.parser.RateLimitParser;
-import org.willwin.draftolio.core.service.ratelimit.parser.impl.RateLimitHeaderParser;
-import org.willwin.draftolio.core.service.ratelimit.parser.impl.RateLimitHeaderParser.RateLimitHeader;
+import org.willwin.draftolio.core.ratelimit.parser.RateLimitParser;
+import org.willwin.draftolio.core.ratelimit.parser.impl.RateLimitHeaderParser;
+import org.willwin.draftolio.core.ratelimit.parser.impl.RateLimitHeaderParser.RateLimitHeader;
 
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;

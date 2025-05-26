@@ -1,12 +1,12 @@
-package org.willwin.draftolio.core.service.ratelimit.parser.impl;
+package org.willwin.draftolio.core.ratelimit.parser.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.willwin.draftolio.core.service.ratelimit.RateLimit;
-import org.willwin.draftolio.core.service.ratelimit.parser.RateLimitParser;
+import org.willwin.draftolio.core.ratelimit.RateLimit;
+import org.willwin.draftolio.core.ratelimit.parser.RateLimitParser;
 
 import java.time.Duration;
 import java.time.temporal.TemporalUnit;

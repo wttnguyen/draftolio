@@ -1,4 +1,4 @@
-package org.willwin.draftolio.core.service.feign;
+package org.willwin.draftolio.core.feign;
 
 import feign.Response;
 import io.github.bucket4j.Bandwidth;
@@ -9,10 +9,10 @@ import io.github.bucket4j.TokensInheritanceStrategy;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.willwin.draftolio.core.exception.ratelimit.RateLimitExceededException;
-import org.willwin.draftolio.core.service.ratelimit.RateLimit;
-import org.willwin.draftolio.core.service.ratelimit.RateLimiterService;
-import org.willwin.draftolio.core.service.ratelimit.parser.RateLimitParser;
+import org.willwin.draftolio.core.ratelimit.RateLimit;
+import org.willwin.draftolio.core.ratelimit.RateLimitExceededException;
+import org.willwin.draftolio.core.ratelimit.RateLimiterService;
+import org.willwin.draftolio.core.ratelimit.parser.RateLimitParser;
 
 import java.time.Duration;
 import java.util.Collection;

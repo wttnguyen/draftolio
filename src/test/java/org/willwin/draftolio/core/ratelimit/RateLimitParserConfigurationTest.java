@@ -1,11 +1,10 @@
-package org.willwin.draftolio.core.configuration.ratelimit;
+package org.willwin.draftolio.core.ratelimit;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.willwin.draftolio.core.service.ratelimit.RateLimit;
-import org.willwin.draftolio.core.service.ratelimit.parser.RateLimitParser;
+import org.willwin.draftolio.core.ratelimit.parser.RateLimitParser;
 
 import java.time.Duration;
 import java.util.Collection;

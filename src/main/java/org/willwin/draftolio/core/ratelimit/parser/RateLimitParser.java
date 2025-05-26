@@ -1,7 +1,7 @@
-package org.willwin.draftolio.core.service.ratelimit.parser;
+package org.willwin.draftolio.core.ratelimit.parser;
 
 import lombok.NonNull;
-import org.willwin.draftolio.core.service.ratelimit.RateLimit;
+import org.willwin.draftolio.core.ratelimit.RateLimit;
 
 import java.util.List;
 

@@ -6,7 +6,6 @@ import feign.Response;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.willwin.draftolio.core.service.feign.FeignResponseRateLimiterService;
 
 import java.io.IOException;
 

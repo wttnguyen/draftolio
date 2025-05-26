@@ -1,4 +1,4 @@
-package org.willwin.draftolio.core.exception.ratelimit;
+package org.willwin.draftolio.core.ratelimit;
 
 /**
  * Exception thrown when a rate limit is exceeded.

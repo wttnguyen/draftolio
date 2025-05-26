@@ -1,4 +1,4 @@
-package org.willwin.draftolio.core.service.ratelimit;
+package org.willwin.draftolio.core.ratelimit;
 
 import lombok.Builder;
 import lombok.Getter;

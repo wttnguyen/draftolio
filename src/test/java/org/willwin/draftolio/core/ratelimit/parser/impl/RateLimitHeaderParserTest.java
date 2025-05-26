@@ -1,10 +1,10 @@
-package org.willwin.draftolio.core.service.ratelimit.parser.impl;
+package org.willwin.draftolio.core.ratelimit.parser.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.willwin.draftolio.core.service.ratelimit.RateLimit;
-import org.willwin.draftolio.core.service.ratelimit.parser.impl.RateLimitHeaderParser.RateLimitHeader;
+import org.willwin.draftolio.core.ratelimit.RateLimit;
+import org.willwin.draftolio.core.ratelimit.parser.impl.RateLimitHeaderParser.RateLimitHeader;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;

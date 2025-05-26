@@ -1,4 +1,4 @@
-package org.willwin.draftolio.core.configuration.feign;
+package org.willwin.draftolio.core.feign;
 
 import feign.Client;
 import org.springframework.context.annotation.Bean;

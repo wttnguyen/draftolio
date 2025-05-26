@@ -1,4 +1,4 @@
-package org.willwin.draftolio.core.service.feign;
+package org.willwin.draftolio.core.feign;
 
 import feign.Response;
 import org.junit.jupiter.api.DisplayName;
@@ -7,9 +7,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.willwin.draftolio.core.exception.ratelimit.RateLimitExceededException;
-import org.willwin.draftolio.core.service.ratelimit.RateLimit;
-import org.willwin.draftolio.core.service.ratelimit.parser.RateLimitParser;
+import org.willwin.draftolio.core.ratelimit.RateLimit;
+import org.willwin.draftolio.core.ratelimit.RateLimitExceededException;
+import org.willwin.draftolio.core.ratelimit.parser.RateLimitParser;
 
 import java.time.Duration;
 import java.util.Collection;

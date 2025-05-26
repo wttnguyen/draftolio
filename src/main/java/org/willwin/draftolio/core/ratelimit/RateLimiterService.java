@@ -1,4 +1,4 @@
-package org.willwin.draftolio.core.service.ratelimit;
+package org.willwin.draftolio.core.ratelimit;
 
 import lombok.NonNull;
 
@@ -18,7 +18,7 @@ public interface RateLimiterService<T>
      * @param key      the key to identify the rate limit bucket
      * @param operator the operation to execute
      * @return the result of the operation
-     * @throws org.willwin.draftolio.core.exception.ratelimit.RateLimitExceededException if the rate limit is exceeded
+     * @throws RateLimitExceededException if the rate limit is exceeded
      */
     T executeWithRateLimit(
             @NonNull String key,

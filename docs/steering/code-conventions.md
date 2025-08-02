@@ -26,8 +26,8 @@ Example:
 ```java
 public class Document {
     private final Long id;
-    private String title;
-    private String content;
+    private final String title;
+    private final String content;
     
     public Document(Long id, String title, String content) {
         this.id = id;
@@ -292,6 +292,56 @@ void shouldReturnFormattedTitleWhenTitleExceeds50Characters() {
     assertEquals("This is a very long title that exceeds the maximum..." , formattedTitle);
 }
 ```
+
+### Library Usage and Framework Preferences
+
+1. **Lombok Usage**:
+    - Prefer Lombok classes over Java records for data classes
+    - Use `@Data` annotation for classes that need getters, setters, equals, hashCode, and toString
+    - Use `@NoArgsConstructor` and `@AllArgsConstructor` for constructor generation
+    - Use `@Builder` for complex object construction when appropriate
+    - Avoid `@FieldDefaults` and prefer explicit field visibility
+
+2. **Configuration Properties**:
+    - Use Lombok classes instead of records for `@ConfigurationProperties` classes
+    - Initialize fields with default values directly in the field declaration
+    - Use proper Javadoc comments for configuration properties
+
+Example:
+
+```java
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ConfigurationProperties(prefix = "app.feature")
+public class FeatureProperties
+{
+
+    /**
+     * Whether the feature is enabled.
+     */
+    private final Boolean enabled = true;
+
+    /**
+     * The timeout duration for feature operations.
+     */
+    private final Duration timeout = Duration.ofSeconds(30);
+
+    /**
+     * The base URL for the feature service.
+     */
+    private final String baseUrl = "https://api.example.com";
+
+}
+```
+
+3. **Rationale**:
+    - Lombok provides more flexibility for customization and extension
+    - Better IDE support and debugging experience
+    - Consistent with Spring Boot best practices
+    - Easier to add custom methods and validation logic
+    - More familiar to most Java developers
 
 ## TypeScript/Angular Code Conventions
 

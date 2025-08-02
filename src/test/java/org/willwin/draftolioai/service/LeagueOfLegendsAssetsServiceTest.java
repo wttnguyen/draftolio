@@ -3,8 +3,6 @@ package org.willwin.draftolioai.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -20,58 +18,73 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for LeagueOfLegendsAssetsService.
  */
-class LeagueOfLegendsAssetsServiceTest {
+@SuppressWarnings("unchecked")
+class LeagueOfLegendsAssetsServiceTest
+{
 
     @TempDir
     Path tempDir;
 
     private LeagueOfLegendsAssetsService service;
+
     private LeagueOfLegendsAssetsProperties properties;
+
     private RestTemplate restTemplate;
 
     @BeforeEach
-    void setUp() {
+    void setUp()
+    {
         properties = new LeagueOfLegendsAssetsProperties(
-            "https://ddragon.leagueoflegends.com/api/versions.json",
-            "https://ddragon.leagueoflegends.com/cdn/dragontail-{version}.tgz",
-            tempDir.toString(),
-            true,
-            Duration.ofSeconds(10),
-            Duration.ofMinutes(5)
+                "https://ddragon.leagueoflegends.com/api/versions.json",
+                "https://ddragon.leagueoflegends.com/cdn/dragontail-{version}.tgz", tempDir.toString(), true,
+                Duration.ofSeconds(10), Duration.ofMinutes(5)
         );
 
         // Create service with mocked RestTemplate
         service = new LeagueOfLegendsAssetsService(properties);
-        
+
         // Replace the RestTemplate with a mock
         restTemplate = mock(RestTemplate.class);
-        try {
+        try
+        {
             var restTemplateField = LeagueOfLegendsAssetsService.class.getDeclaredField("restTemplate");
             restTemplateField.setAccessible(true);
             restTemplateField.set(service, restTemplate);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             fail("Failed to inject mock RestTemplate: " + e.getMessage());
         }
     }
 
     @Test
-    void testGetLatestVersion_Success() {
+    void testGetLatestVersion_Success()
+    {
         // Arrange
         List<String> versions = Arrays.asList("14.15.1", "14.14.1", "14.13.1");
         ResponseEntity<List<String>> response = new ResponseEntity<>(versions, HttpStatus.OK);
-        
+
         when(restTemplate.exchange(
-            eq(properties.versionsUrl()),
-            eq(HttpMethod.GET),
-            isNull(),
-            any(ParameterizedTypeReference.class)
+                eq(properties.getVersionsUrl()), eq(HttpMethod.GET), isNull(),
+                any(ParameterizedTypeReference.class)
         )).thenReturn(response);
 
         // Act
@@ -80,23 +93,20 @@ class LeagueOfLegendsAssetsServiceTest {
         // Assert
         assertEquals("14.15.1", latestVersion);
         verify(restTemplate).exchange(
-            eq(properties.versionsUrl()),
-            eq(HttpMethod.GET),
-            isNull(),
-            any(ParameterizedTypeReference.class)
+                eq(properties.getVersionsUrl()), eq(HttpMethod.GET), isNull(),
+                any(ParameterizedTypeReference.class)
         );
     }
 
     @Test
-    void testGetLatestVersion_EmptyResponse() {
+    void testGetLatestVersion_EmptyResponse()
+    {
         // Arrange
         ResponseEntity<List<String>> response = new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
-        
+
         when(restTemplate.exchange(
-            eq(properties.versionsUrl()),
-            eq(HttpMethod.GET),
-            isNull(),
-            any(ParameterizedTypeReference.class)
+                eq(properties.getVersionsUrl()), eq(HttpMethod.GET), isNull(),
+                any(ParameterizedTypeReference.class)
         )).thenReturn(response);
 
         // Act
@@ -107,13 +117,12 @@ class LeagueOfLegendsAssetsServiceTest {
     }
 
     @Test
-    void testGetLatestVersion_Exception() {
+    void testGetLatestVersion_Exception()
+    {
         // Arrange
         when(restTemplate.exchange(
-            eq(properties.versionsUrl()),
-            eq(HttpMethod.GET),
-            isNull(),
-            any(ParameterizedTypeReference.class)
+                eq(properties.getVersionsUrl()), eq(HttpMethod.GET), isNull(),
+                any(ParameterizedTypeReference.class)
         )).thenThrow(new RuntimeException("Network error"));
 
         // Act
@@ -124,7 +133,8 @@ class LeagueOfLegendsAssetsServiceTest {
     }
 
     @Test
-    void testIsVersionCached_NotCached() {
+    void testIsVersionCached_NotCached()
+    {
         // Act
         boolean cached = service.isVersionCached("14.15.1");
 
@@ -133,7 +143,8 @@ class LeagueOfLegendsAssetsServiceTest {
     }
 
     @Test
-    void testIsVersionCached_Cached() throws IOException {
+    void testIsVersionCached_Cached() throws IOException
+    {
         // Arrange
         String version = "14.15.1";
         Path versionDir = tempDir.resolve(version);
@@ -147,7 +158,8 @@ class LeagueOfLegendsAssetsServiceTest {
     }
 
     @Test
-    void testIsVersionCached_FileInsteadOfDirectory() throws IOException {
+    void testIsVersionCached_FileInsteadOfDirectory() throws IOException
+    {
         // Arrange
         String version = "14.15.1";
         Path versionFile = tempDir.resolve(version);
@@ -161,7 +173,8 @@ class LeagueOfLegendsAssetsServiceTest {
     }
 
     @Test
-    void testGetCacheDirectory() {
+    void testGetCacheDirectory()
+    {
         // Act
         Path cacheDir = service.getCacheDirectory();
 
@@ -170,7 +183,8 @@ class LeagueOfLegendsAssetsServiceTest {
     }
 
     @Test
-    void testGetVersionDirectory() {
+    void testGetVersionDirectory()
+    {
         // Arrange
         String version = "14.15.1";
 
@@ -182,35 +196,32 @@ class LeagueOfLegendsAssetsServiceTest {
     }
 
     @Test
-    void testInitializeAssets_Disabled() {
+    void testInitializeAssets_Disabled()
+    {
         // Arrange
         LeagueOfLegendsAssetsProperties disabledProperties = new LeagueOfLegendsAssetsProperties(
-            properties.versionsUrl(),
-            properties.assetsBaseUrl(),
-            properties.cacheDirectory(),
-            false, // disabled
-            properties.requestTimeout(),
-            properties.downloadTimeout()
+                properties.getVersionsUrl(), properties.getAssetsBaseUrl(), properties.getCacheDirectory(), false,
+                // disabled
+                properties.getRequestTimeout(), properties.getDownloadTimeout()
         );
-        
+
         LeagueOfLegendsAssetsService disabledService = new LeagueOfLegendsAssetsService(disabledProperties);
 
         // Act & Assert - should not throw any exceptions
-        assertDoesNotThrow(() -> disabledService.initializeAssets());
+        assertDoesNotThrow(disabledService::initializeAssets);
     }
 
     @Test
-    void testInitializeAssets_VersionAlreadyCached() throws IOException {
+    void testInitializeAssets_VersionAlreadyCached() throws IOException
+    {
         // Arrange
         String version = "14.15.1";
         List<String> versions = Arrays.asList(version, "14.14.1");
         ResponseEntity<List<String>> response = new ResponseEntity<>(versions, HttpStatus.OK);
-        
+
         when(restTemplate.exchange(
-            eq(properties.versionsUrl()),
-            eq(HttpMethod.GET),
-            isNull(),
-            any(ParameterizedTypeReference.class)
+                eq(properties.getVersionsUrl()), eq(HttpMethod.GET), isNull(),
+                any(ParameterizedTypeReference.class)
         )).thenReturn(response);
 
         // Create cached version directory
@@ -221,24 +232,21 @@ class LeagueOfLegendsAssetsServiceTest {
 
         // Assert
         verify(restTemplate).exchange(
-            eq(properties.versionsUrl()),
-            eq(HttpMethod.GET),
-            isNull(),
-            any(ParameterizedTypeReference.class)
+                eq(properties.getVersionsUrl()), eq(HttpMethod.GET), isNull(),
+                any(ParameterizedTypeReference.class)
         );
-        
+
         // Should not attempt to download since version is cached
         verify(restTemplate, never()).getForObject(anyString(), eq(byte[].class));
     }
 
     @Test
-    void testInitializeAssets_FailedToGetVersion() {
+    void testInitializeAssets_FailedToGetVersion()
+    {
         // Arrange
         when(restTemplate.exchange(
-            eq(properties.versionsUrl()),
-            eq(HttpMethod.GET),
-            isNull(),
-            any(ParameterizedTypeReference.class)
+                eq(properties.getVersionsUrl()), eq(HttpMethod.GET), isNull(),
+                any(ParameterizedTypeReference.class)
         )).thenThrow(new RuntimeException("Network error"));
 
         // Act & Assert - should not throw exceptions, just log the error
@@ -246,16 +254,14 @@ class LeagueOfLegendsAssetsServiceTest {
     }
 
     @Test
-    void testConstructor_CreatesDirectories() {
+    void testConstructor_CreatesDirectories()
+    {
         // Arrange
         Path newTempDir = tempDir.resolve("new-cache");
         LeagueOfLegendsAssetsProperties newProperties = new LeagueOfLegendsAssetsProperties(
-            properties.versionsUrl(),
-            properties.assetsBaseUrl(),
-            newTempDir.toString(),
-            properties.enabled(),
-            properties.requestTimeout(),
-            properties.downloadTimeout()
+                properties.getVersionsUrl(),
+                properties.getAssetsBaseUrl(), newTempDir.toString(), properties.getEnabled(),
+                properties.getRequestTimeout(), properties.getDownloadTimeout()
         );
 
         // Act
@@ -265,4 +271,5 @@ class LeagueOfLegendsAssetsServiceTest {
         assertTrue(Files.exists(newTempDir));
         assertTrue(Files.isDirectory(newTempDir));
     }
+
 }

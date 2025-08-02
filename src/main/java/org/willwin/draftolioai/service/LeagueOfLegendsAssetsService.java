@@ -1,5 +1,6 @@
 package org.willwin.draftolioai.service;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -13,11 +14,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.willwin.draftolioai.config.LeagueOfLegendsAssetsProperties;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 /**
@@ -27,77 +29,100 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class LeagueOfLegendsAssetsService {
+public class LeagueOfLegendsAssetsService
+{
 
     private final LeagueOfLegendsAssetsProperties properties;
+
     private final RestTemplate restTemplate;
+
+    @Getter
     private final Path cacheDirectory;
 
-    public LeagueOfLegendsAssetsService(LeagueOfLegendsAssetsProperties properties) {
+    public LeagueOfLegendsAssetsService(LeagueOfLegendsAssetsProperties properties)
+    {
         this.properties = properties;
         this.restTemplate = new RestTemplate();
-        this.cacheDirectory = Paths.get(properties.cacheDirectory());
-        
+        this.cacheDirectory = Paths.get(properties.getCacheDirectory());
+
         // Create cache directory if it doesn't exist
-        try {
+        try
+        {
             Files.createDirectories(cacheDirectory);
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             log.error("Failed to create cache directory: {}", cacheDirectory, e);
         }
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void initializeAssets() {
-        if (!properties.enabled()) {
+    public void initializeAssets()
+    {
+        if (!properties.getEnabled())
+        {
             log.info("League of Legends assets management is disabled");
             return;
         }
 
         log.info("Initializing League of Legends assets management...");
-        
-        try {
+
+        try
+        {
             String latestVersion = getLatestVersion();
-            if (latestVersion != null) {
-                if (!isVersionCached(latestVersion)) {
+            if (latestVersion != null)
+            {
+                if (!isVersionCached(latestVersion))
+                {
                     log.info("New version {} detected, downloading assets...", latestVersion);
                     downloadAndExtractAssets(latestVersion);
                     log.info("Successfully downloaded and extracted assets for version {}", latestVersion);
-                } else {
+                }
+                else
+                {
                     log.info("Version {} is already cached, skipping download", latestVersion);
                 }
-            } else {
+            }
+            else
+            {
                 log.warn("Failed to retrieve latest version information");
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             log.error("Failed to initialize League of Legends assets", e);
         }
     }
 
-    public String getLatestVersion() {
-        try {
-            log.debug("Fetching latest version from: {}", properties.versionsUrl());
-            
+    public String getLatestVersion()
+    {
+        try
+        {
+            log.debug("Fetching latest version from: {}", properties.getVersionsUrl());
+
             ResponseEntity<List<String>> response = restTemplate.exchange(
-                properties.versionsUrl(),
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<String>>() {}
+                    properties.getVersionsUrl(), HttpMethod.GET,
+                    null, new ParameterizedTypeReference<>() { }
             );
-            
+
             List<String> versions = response.getBody();
-            if (versions != null && !versions.isEmpty()) {
-                String latestVersion = versions.get(0); // First element is the latest version
+            if (versions != null && !versions.isEmpty())
+            {
+                String latestVersion = versions.getFirst(); // First element is the latest version
                 log.debug("Latest version: {}", latestVersion);
                 return latestVersion;
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             log.error("Failed to fetch latest version", e);
         }
-        
+
         return null;
     }
 
-    public boolean isVersionCached(String version) {
+    public boolean isVersionCached(String version)
+    {
         Path versionDirectory = cacheDirectory.resolve(version);
         boolean cached = Files.exists(versionDirectory) && Files.isDirectory(versionDirectory);
         log.debug("Version {} cached: {}", version, cached);
@@ -110,17 +135,20 @@ public class LeagueOfLegendsAssetsService {
      * @param version The version to download
      * @throws IOException if download or extraction fails
      */
-    public void downloadAndExtractAssets(String version) throws IOException {
-        String downloadUrl = properties.assetsBaseUrl().replace("{version}", version);
+    public void downloadAndExtractAssets(String version) throws IOException
+    {
+        String downloadUrl = properties.getAssetsBaseUrl().replace("{version}", version);
         log.info("Downloading assets from: {}", downloadUrl);
-        
+
         // Create temporary file for download
         Path tempFile = Files.createTempFile("lol-assets-", ".tgz");
 
-        try {
+        try
+        {
             // Download the file as byte array
             byte[] data = restTemplate.getForObject(downloadUrl, byte[].class);
-            if (data == null || data.length == 0) {
+            if (data == null || data.length == 0)
+            {
                 throw new IOException("Failed to download assets: empty response");
             }
             Files.write(tempFile, data);
@@ -129,64 +157,74 @@ public class LeagueOfLegendsAssetsService {
             // Extract the downloaded file
             extractTarGzFile(tempFile, version);
 
-        } finally {
+        }
+        finally
+        {
             // Clean up temporary file
-            try {
+            try
+            {
                 Files.deleteIfExists(tempFile);
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 log.warn("Failed to delete temporary file: {}", tempFile, e);
             }
         }
     }
 
-    private void extractTarGzFile(Path tarGzFile, String version) throws IOException {
+    private void extractTarGzFile(Path tarGzFile, String version) throws IOException
+    {
         Path versionDirectory = cacheDirectory.resolve(version);
         Files.createDirectories(versionDirectory);
-        
+
         log.info("Extracting assets to: {}", versionDirectory);
-        
-        try (FileInputStream fis = new FileInputStream(tarGzFile.toFile());
-             GzipCompressorInputStream gzis = new GzipCompressorInputStream(fis);
-             TarArchiveInputStream tais = new TarArchiveInputStream(gzis)) {
-            
+
+        try (FileInputStream fis = new FileInputStream(
+                tarGzFile.toFile()); GzipCompressorInputStream gzis = new GzipCompressorInputStream(
+                fis); TarArchiveInputStream tais = new TarArchiveInputStream(gzis))
+        {
+
             TarArchiveEntry entry;
             int extractedFiles = 0;
-            
-            while ((entry = tais.getNextTarEntry()) != null) {
-                if (entry.isDirectory()) {
+
+            while ((entry = tais.getNextEntry()) != null)
+            {
+                if (entry.isDirectory())
+                {
                     continue;
                 }
-                
+
                 // Create the file path relative to the version directory
                 Path outputPath = versionDirectory.resolve(entry.getName());
-                
+
                 // Ensure parent directories exist
                 Files.createDirectories(outputPath.getParent());
-                
+
                 // Extract the file
-                try (FileOutputStream fos = new FileOutputStream(outputPath.toFile())) {
+                try (FileOutputStream fos = new FileOutputStream(outputPath.toFile()))
+                {
                     byte[] buffer = new byte[8192];
                     int bytesRead;
-                    while ((bytesRead = tais.read(buffer)) != -1) {
+                    while ((bytesRead = tais.read(buffer)) != -1)
+                    {
                         fos.write(buffer, 0, bytesRead);
                     }
                 }
-                
+
                 extractedFiles++;
-                if (extractedFiles % 100 == 0) {
+                if (extractedFiles % 100 == 0)
+                {
                     log.debug("Extracted {} files...", extractedFiles);
                 }
             }
-            
+
             log.info("Successfully extracted {} files for version {}", extractedFiles, version);
         }
     }
 
-    public Path getCacheDirectory() {
-        return cacheDirectory;
-    }
-
-    public Path getVersionDirectory(String version) {
+    public Path getVersionDirectory(String version)
+    {
         return cacheDirectory.resolve(version);
     }
+
 }

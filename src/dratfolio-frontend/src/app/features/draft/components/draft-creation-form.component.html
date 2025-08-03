@@ -1,0 +1,212 @@
+<p-card header="Create Draft"
+        class="draft-creation-card">
+	<!-- US-1 AC1: User can see a "Create Draft" form -->
+	<form [formGroup]="form"
+	      (ngSubmit)="onSubmit()"
+	      class="draft-form">
+
+		<!-- Error message display -->
+		@if (errorMessage()) {
+			<p-message severity="error"
+			           class="mb-4">{{ errorMessage()! }}
+			</p-message>
+		}
+
+		<!-- Blue Team Name Field -->
+		<div class="field mb-4">
+			<label for="blueTeamName"
+			       class="block text-900 font-medium mb-2">
+				Blue Team Name <span class="text-red-500">*</span>
+			</label>
+			<input
+				pInputText
+				id="blueTeamName"
+				formControlName="blueTeamName"
+				placeholder="Enter blue team name"
+				class="w-full"
+				[class.ng-invalid]="hasFieldError('blueTeamName')"
+			/>
+			@if (hasFieldError('blueTeamName')) {
+				<small class="text-red-500 mt-1 block">{{ getFieldError('blueTeamName') }}</small>
+			}
+		</div>
+
+		<!-- Red Team Name Field -->
+		<div class="field mb-4">
+			<label for="redTeamName"
+			       class="block text-900 font-medium mb-2">
+				Red Team Name <span class="text-red-500">*</span>
+			</label>
+			<input
+				pInputText
+				id="redTeamName"
+				formControlName="redTeamName"
+				placeholder="Enter red team name"
+				class="w-full"
+				[class.ng-invalid]="hasFieldError('redTeamName')"
+			/>
+			@if (hasFieldError('redTeamName')) {
+				<small class="text-red-500 mt-1 block">{{ getFieldError('redTeamName') }}</small>
+			}
+		</div>
+
+		<!-- Draft Name Field (Optional) -->
+		<div class="field mb-4">
+			<label for="name"
+			       class="block text-900 font-medium mb-2">
+				Draft Name <span class="text-500">(optional)</span>
+			</label>
+			<input
+				pInputText
+				id="name"
+				formControlName="name"
+				placeholder="Enter draft name (optional)"
+				class="w-full"
+				[class.ng-invalid]="hasFieldError('name')"
+			/>
+			@if (hasFieldError('name')) {
+				<small class="text-red-500 mt-1 block">{{ getFieldError('name') }}</small>
+			}
+		</div>
+
+		<!-- Draft Description Field -->
+		<div class="field mb-4">
+			<label for="description"
+			       class="block text-900 font-medium mb-2">
+				Description <span class="text-500">(optional)</span>
+			</label>
+			<textarea
+				pTextarea
+				id="description"
+				formControlName="description"
+				placeholder="Enter draft description"
+				rows="3"
+				class="w-full"
+				[class.ng-invalid]="hasFieldError('description')"
+			></textarea>
+			@if (hasFieldError('description')) {
+				<small class="text-red-500 mt-1 block">{{ getFieldError('description') }}</small>
+			}
+		</div>
+
+		<!-- Draft Mode Selection - US-1 AC2, AC3 -->
+		<div class="field mb-4">
+			<label for="mode"
+			       class="block text-900 font-medium mb-2">
+				Draft Mode <span class="text-red-500">*</span>
+			</label>
+			<p-select
+				id="mode"
+				formControlName="mode"
+				[options]="draftModes()"
+				optionLabel="label"
+				optionValue="value"
+				placeholder="Select draft mode"
+				class="w-full"
+				[class.ng-invalid]="hasFieldError('mode')"
+			></p-select>
+			@if (hasFieldError('mode')) {
+				<small class="text-red-500 mt-1 block">{{ getFieldError('mode') }}</small>
+			}
+
+			<!-- Mode Description - US-1 AC3: User sees explanation of mode rules -->
+			@if (selectedModeDescription()) {
+				<div class="mt-2 p-3 bg-blue-50 border-l-4 border-blue-500 text-blue-700">
+					<i class="pi pi-info-circle mr-2"></i>
+					{{ selectedModeDescription() }}
+				</div>
+			}
+		</div>
+
+		<!-- Timer Settings -->
+		<div class="field mb-4">
+			<h4 class="text-900 font-medium mb-3">Timer Settings</h4>
+
+			<div class="grid">
+				<!-- Ban Phase Timer -->
+				<div class="col-12 md:col-6">
+					<label for="banPhaseTimer"
+					       class="block text-900 font-medium mb-2">
+						Ban Phase Timer (seconds)
+					</label>
+					<p-inputNumber
+						id="banPhaseTimer"
+						formControlName="banPhaseTimerDuration"
+						[min]="10"
+						[max]="300"
+						[showButtons]="true"
+						class="w-full"
+					></p-inputNumber>
+					@if (hasFieldError('banPhaseTimerDuration')) {
+						<small class="text-red-500 mt-1 block">{{ getFieldError('banPhaseTimerDuration') }}</small>
+					}
+				</div>
+
+				<!-- Pick Phase Timer -->
+				<div class="col-12 md:col-6">
+					<label for="pickPhaseTimer"
+					       class="block text-900 font-medium mb-2">
+						Pick Phase Timer (seconds)
+					</label>
+					<p-inputNumber
+						id="pickPhaseTimer"
+						formControlName="pickPhaseTimerDuration"
+						[min]="10"
+						[max]="300"
+						[showButtons]="true"
+						class="w-full"
+					></p-inputNumber>
+					@if (hasFieldError('pickPhaseTimerDuration')) {
+						<small class="text-red-500 mt-1 block">{{ getFieldError('pickPhaseTimerDuration') }}</small>
+					}
+				</div>
+			</div>
+		</div>
+
+		<!-- Form Actions -->
+		<div class="flex justify-content-end gap-2 mt-4">
+			<p-button
+				label="Cancel"
+				icon="pi pi-times"
+				severity="secondary"
+				variant="outlined"
+				(click)="onCancel()"
+				[disabled]="isSubmitting()"
+			></p-button>
+
+			<p-button
+				label="Create Draft"
+				icon="pi pi-plus"
+				type="submit"
+				[loading]="isSubmitting()"
+				[disabled]="form.invalid"
+			></p-button>
+		</div>
+
+		<!-- Information about draft creation -->
+		<div class="mt-4 p-3 bg-gray-50 border-round">
+			<h5 class="text-900 font-medium mb-2">
+				<i class="pi pi-info-circle mr-2"></i>
+				Draft Creation Info
+			</h5>
+			<ul class="text-600 text-sm list-none p-0 m-0">
+				<li class="mb-1">
+					<i class="pi pi-check text-green-500 mr-2"></i>
+					A blue captain link will be generated for the blue team
+				</li>
+				<li class="mb-1">
+					<i class="pi pi-check text-green-500 mr-2"></i>
+					A red captain link will be generated for the red team
+				</li>
+				<li class="mb-1">
+					<i class="pi pi-check text-green-500 mr-2"></i>
+					A shareable spectator link will be generated for viewers
+				</li>
+				<li class="mb-1">
+					<i class="pi pi-check text-green-500 mr-2"></i>
+					Anyone with a captain link can control their team's draft
+				</li>
+			</ul>
+		</div>
+	</form>
+</p-card>

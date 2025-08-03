@@ -397,7 +397,7 @@ const document = {
    - Use UPPER_SNAKE_CASE for global constants
    - Use camelCase for local constants
 
-6. **CSS/SCSS**:
+6. **CSS**:
    - Use kebab-case for class names (e.g., `document-card`, `user-avatar`)
    - Use BEM (Block Element Modifier) methodology for structuring CSS classes
 
@@ -419,7 +419,7 @@ import { input, output } from '@angular/core';
 @Component({
   selector: 'app-document-card',
   templateUrl: './document-card.component.html',
-  styleUrls: ['./document-card.component.scss'],
+	styleUrls: [ './document-card.component.css' ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'class': 'document-card',
@@ -538,7 +538,7 @@ import { Document } from '../../models/document.model';
 @Component({
   selector: 'app-document-list',
   templateUrl: './document-list.component.html',
-  styleUrls: ['./document-list.component.scss']
+	styleUrls: [ './document-list.component.css' ]
 })
 export class DocumentListComponent {
   private documentService = inject(DocumentService);

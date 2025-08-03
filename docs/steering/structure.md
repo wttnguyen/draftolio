@@ -133,9 +133,9 @@ src/
 │   └── fonts/                   (Font files)
 ├── environments/                (Environment configurations)
 └── styles/                      (Global styles)
-    ├── _variables.scss          (SCSS variables)
-    ├── _mixins.scss             (SCSS mixins)
-    └── _themes.scss             (Theme definitions)
+    ├── _variables.css           (CSS variables)
+    ├── _mixins.css              (CSS mixins)
+    └── _themes.css              (Theme definitions)
 ```
 
 ## Domain Model
@@ -239,7 +239,7 @@ src/
    - Use PascalCase for enum names (e.g., `DraftStatus`, `Team`)
    - Use PascalCase for enum values (e.g., `InProgress`, `Completed`)
 
-5. **CSS/SCSS**
+5. **CSS**
    - Use kebab-case for class names (e.g., `draft-board`, `champion-card`)
    - Use BEM (Block Element Modifier) methodology for structuring CSS classes
 

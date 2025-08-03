@@ -1,0 +1,147 @@
+<div class="login-container">
+	<div class="login-card">
+		<!-- Header -->
+		<div class="login-header">
+			<h1 class="login-title">Welcome to Draftolio AI</h1>
+			<p class="login-subtitle">Sign in with your Riot Games account to access advanced drafting tools</p>
+		</div>
+
+		<!-- Success Message -->
+		@if (successMessage()) {
+			<div class="alert alert-success"
+			     role="alert">
+				<i class="pi pi-check-circle"></i>
+				<span>{{ successMessage() }}</span>
+				<button
+					type="button"
+					class="alert-close"
+					(click)="clearMessages()"
+					aria-label="Close">
+					<i class="pi pi-times"></i>
+				</button>
+			</div>
+		}
+
+		<!-- Error Message -->
+		@if (hasError()) {
+			<div class="alert alert-error"
+			     role="alert">
+				<i class="pi pi-exclamation-triangle"></i>
+				<span>{{ getCurrentError() }}</span>
+				<button
+					type="button"
+					class="alert-close"
+					(click)="clearMessages()"
+					aria-label="Close">
+					<i class="pi pi-times"></i>
+				</button>
+			</div>
+		}
+
+		<!-- Login Form -->
+		<div class="login-form">
+			<div class="login-description">
+				<h2>Secure Authentication</h2>
+				<p>
+					Authenticate securely using your Riot Games account. This ensures your identity
+					is verified and gives you access to your League of Legends data for enhanced
+					drafting recommendations.
+				</p>
+
+				<div class="features-list">
+					<div class="feature-item">
+						<i class="pi pi-shield"></i>
+						<span>Secure OAuth 2.0 authentication</span>
+					</div>
+					<div class="feature-item">
+						<i class="pi pi-user"></i>
+						<span>Access to your summoner information</span>
+					</div>
+					<div class="feature-item">
+						<i class="pi pi-chart-line"></i>
+						<span>Personalized draft recommendations</span>
+					</div>
+					<div class="feature-item">
+						<i class="pi pi-users"></i>
+						<span>Team management features</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Login Button -->
+			<div class="login-actions">
+				<button
+					type="button"
+					class="login-button"
+					(click)="login()"
+					[disabled]="isLoading() || authLoading()"
+					[class.loading]="isLoading() || authLoading()">
+
+					@if (isLoading() || authLoading()) {
+						<i class="pi pi-spinner pi-spin"></i>
+						<span>Connecting to Riot Games...</span>
+					} @else {
+						<i class="pi pi-sign-in"></i>
+						<span>Sign in with Riot Games</span>
+					}
+				</button>
+
+				<p class="login-disclaimer">
+					By signing in, you agree to our
+					<a href="/terms"
+					   target="_blank"
+					   rel="noopener noreferrer">Terms of Service</a>
+					and
+					<a href="/privacy"
+					   target="_blank"
+					   rel="noopener noreferrer">Privacy Policy</a>.
+					We only access the information necessary to provide our services.
+				</p>
+			</div>
+		</div>
+
+		<!-- Help Section -->
+		<div class="login-help">
+			<h3>Need Help?</h3>
+			<div class="help-items">
+				<div class="help-item">
+					<strong>Don't have a Riot Games account?</strong>
+					<p>
+						You'll need a Riot Games account to use Draftolio AI.
+						<a href="https://signup.leagueoflegends.com/"
+						   target="_blank"
+						   rel="noopener noreferrer">
+							Create one here
+						</a>
+					</p>
+				</div>
+				<div class="help-item">
+					<strong>Having trouble signing in?</strong>
+					<p>
+						Make sure you're using the correct Riot Games credentials.
+						If you continue to have issues,
+						<a href="/support"
+						   target="_blank"
+						   rel="noopener noreferrer">contact our support team</a>.
+					</p>
+				</div>
+				<div class="help-item">
+					<strong>Privacy concerns?</strong>
+					<p>
+						We only access basic account information and your game region.
+						Read our <a href="/privacy"
+						            target="_blank"
+						            rel="noopener noreferrer">Privacy Policy</a>
+						for more details.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Footer -->
+	<div class="login-footer">
+		<p>&copy; 2025 Draftolio AI. Not affiliated with Riot Games.</p>
+		<p>League of Legends is a trademark of Riot Games, Inc.</p>
+	</div>
+</div>

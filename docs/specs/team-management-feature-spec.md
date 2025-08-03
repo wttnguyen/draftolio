@@ -31,13 +31,13 @@ Team Management provides significant value to users by allowing them to create v
 ### 1.4 Scope
 
 - **In Scope**: 
-  - Riot Sign-On (RSO) authentication
   - Team creation and management
   - Player assignment to positions (Top, Jungle, Middle, Bottom, Support)
   - Creating drafts between two teams
   - Automatic calculation of players' top 3 champions based on ranked match history and performance
   - Displaying players' top 3 champions during drafting
   - Basic team statistics
+  - Integration with Riot Sign-On authentication (detailed in [RSO Integration Specification](./riot-sign-on-integration-spec.md))
 
 - **Out of Scope**: 
   - Advanced team analytics
@@ -64,20 +64,9 @@ Team Management provides significant value to users by allowing them to create v
 
 ### 2.2 User Stories
 
-#### US-1: User Authentication with Riot Sign-On
+**Note**: For user stories related to Riot Sign-On authentication, see [Riot Sign-On Integration Specification](./riot-sign-on-integration-spec.md).
 
-As a user, I want to sign in using my Riot account, so that I can access team management features without creating a separate account.
-
-**Priority**: Must Have
-
-**Acceptance Criteria**:
-1. Given I am on the login page, when I click "Sign in with Riot", then I am redirected to the Riot Sign-On page.
-2. Given I have authenticated with Riot, when I am redirected back to the application, then I am logged in and can access team management features.
-3. Given I am logged in, when I view my profile, then I can see my Riot account information.
-4. Given I am logged in, when my session expires, then I am prompted to re-authenticate.
-5. Given I want to log out, when I click the logout button, then my session is terminated and I am redirected to the login page.
-
-#### US-2: Team Creation and Management
+#### US-1: Team Creation and Management
 
 As a team captain, I want to create and manage teams with League of Legends players, so that I can organize my roster and prepare for drafts.
 
@@ -91,7 +80,7 @@ As a team captain, I want to create and manage teams with League of Legends play
 5. Given I am managing a team, when I edit the team, then I can update team details and player information.
 6. Given I am managing a team, when I remove a player, then the player is no longer associated with the team.
 
-#### US-3: Player Position Assignment
+#### US-2: Player Position Assignment
 
 As a team captain, I want to assign players to specific positions, so that I can organize my team according to their roles.
 
@@ -103,7 +92,7 @@ As a team captain, I want to assign players to specific positions, so that I can
 3. Given I am managing a team, when I try to assign multiple players to the same position, then I receive a warning but am allowed to proceed.
 4. Given I am managing a team with more than 5 players, when I view the team, then I can see all players grouped by their positions.
 
-#### US-4: Automatic Champion Preference Calculation
+#### US-3: Automatic Champion Preference Calculation
 
 As a player, I want the system to automatically calculate my champion preferences based on my ranked match history and performance, so that my team can see my best champions during drafting without manual input.
 
@@ -116,7 +105,7 @@ As a player, I want the system to automatically calculate my champion preference
 4. Given a player's match history changes over time, when they play new ranked games, then their champion preferences are updated accordingly.
 5. Given I am a team captain, when I view a player's profile, then I can see their automatically calculated champion preferences.
 
-#### US-5: Team-Based Draft Creation
+#### US-4: Team-Based Draft Creation
 
 As a team captain, I want to create drafts between two teams, so that we can practice drafting with our actual rosters.
 
@@ -129,7 +118,7 @@ As a team captain, I want to create drafts between two teams, so that we can pra
 4. Given I have selected two teams and assigned positions, when I start the draft, then the draft begins with the selected teams and players.
 5. Given a team has fewer than 5 players, when I try to create a draft, then I am prompted to assign players to all positions before proceeding.
 
-#### US-6: Viewing Player Champion Preferences During Draft
+#### US-5: Viewing Player Champion Preferences During Draft
 
 As a captain, I want to see each player's top 3 champions during drafting, so that I can make informed picking and banning decisions.
 
@@ -647,10 +636,10 @@ Frontend -> User: Show Draft Board
 
 ### 3.3 Security Considerations
 
-- **Authentication**: All team management features require authentication via Riot Sign-On (RSO).
+- **Authentication**: All team management features require authentication via Riot Sign-On (RSO). For detailed authentication requirements and implementation,
+  see [Riot Sign-On Integration Specification](./riot-sign-on-integration-spec.md).
 - **Authorization**: Only team owners can edit team details and add/remove players.
 - **Data Protection**: Player information is protected and only shared with team members and during drafts.
-- **Token Security**: Riot access tokens and refresh tokens are securely stored and never exposed to clients.
 - **API Rate Limiting**: Implement rate limiting for Riot API calls to prevent abuse.
 - **Input Validation**: All user inputs are validated to prevent injection attacks.
 
@@ -678,38 +667,38 @@ Frontend -> User: Show Draft Board
 
 #### Backend Tasks
 
-| Task ID | Description | Estimated Effort | Dependencies |
-|---------|-------------|------------------|--------------|
-| BE-1 | Implement Riot Sign-On authentication | 3 days | None |
-| BE-2 | Create Team and Player data models | 2 days | None |
-| BE-3 | Implement Team CRUD operations | 3 days | BE-2 |
-| BE-4 | Implement Player CRUD operations | 2 days | BE-2 |
-| BE-5 | Create Match Analysis Service architecture | 3 days | BE-2, BE-4 |
-| BE-6 | Implement Riot API integration for match history | 4 days | BE-1, BE-5 |
-| BE-7 | Develop champion performance calculation algorithms | 3 days | BE-5, BE-6 |
-| BE-8 | Implement automatic champion preference ranking | 2 days | BE-7 |
-| BE-9 | Create scheduled job for periodic preference updates | 2 days | BE-8 |
-| BE-10 | Implement caching strategy for Riot API data | 2 days | BE-6 |
-| BE-11 | Modify Draft service for team-based drafts | 3 days | BE-2, BE-3 |
-| BE-12 | Implement player information WebSocket events | 2 days | BE-4, BE-8, BE-11 |
-| BE-13 | Create API endpoints for champion preferences | 2 days | BE-8 |
-| BE-14 | Implement manual trigger for match history analysis | 1 day | BE-7, BE-8 |
+| Task ID | Description                                                                                            | Estimated Effort | Dependencies      |
+|---------|--------------------------------------------------------------------------------------------------------|------------------|-------------------|
+| BE-1    | Implement Riot Sign-On authentication (see [RSO Integration Spec](./riot-sign-on-integration-spec.md)) | 3 days           | None              |
+| BE-2    | Create Team and Player data models                                                                     | 2 days           | None              |
+| BE-3    | Implement Team CRUD operations                                                                         | 3 days           | BE-2              |
+| BE-4    | Implement Player CRUD operations                                                                       | 2 days           | BE-2              |
+| BE-5    | Create Match Analysis Service architecture                                                             | 3 days           | BE-2, BE-4        |
+| BE-6    | Implement Riot API integration for match history                                                       | 4 days           | BE-1, BE-5        |
+| BE-7    | Develop champion performance calculation algorithms                                                    | 3 days           | BE-5, BE-6        |
+| BE-8    | Implement automatic champion preference ranking                                                        | 2 days           | BE-7              |
+| BE-9    | Create scheduled job for periodic preference updates                                                   | 2 days           | BE-8              |
+| BE-10   | Implement caching strategy for Riot API data                                                           | 2 days           | BE-6              |
+| BE-11   | Modify Draft service for team-based drafts                                                             | 3 days           | BE-2, BE-3        |
+| BE-12   | Implement player information WebSocket events                                                          | 2 days           | BE-4, BE-8, BE-11 |
+| BE-13   | Create API endpoints for champion preferences                                                          | 2 days           | BE-8              |
+| BE-14   | Implement manual trigger for match history analysis                                                    | 1 day            | BE-7, BE-8        |
 
 #### Frontend Tasks
 
-| Task ID | Description | Estimated Effort | Dependencies |
-|---------|-------------|------------------|--------------|
-| FE-1 | Implement Riot Sign-On UI | 2 days | BE-1 |
-| FE-2 | Create Team management UI | 3 days | BE-3 |
-| FE-3 | Create Player management UI | 3 days | BE-4 |
-| FE-4 | Implement Champion performance display UI | 3 days | BE-8, BE-13 |
-| FE-5 | Create visualization components for win rates and performance metrics | 2 days | FE-4 |
-| FE-6 | Implement manual analysis trigger button | 1 day | BE-14 |
-| FE-7 | Create Team-based draft setup UI | 3 days | BE-11 |
-| FE-8 | Implement Player information display in draft UI | 2 days | BE-12 |
-| FE-9 | Create loading states for champion preference calculation | 1 day | FE-4, FE-6 |
-| FE-10 | Implement error handling for Riot API limitations | 1 day | FE-4, FE-6 |
-| FE-11 | Create responsive layouts for all new components | 2 days | FE-2, FE-3, FE-7, FE-8 |
+| Task ID | Description                                                                                | Estimated Effort | Dependencies           |
+|---------|--------------------------------------------------------------------------------------------|------------------|------------------------|
+| FE-1    | Implement Riot Sign-On UI (see [RSO Integration Spec](./riot-sign-on-integration-spec.md)) | 2 days           | BE-1                   |
+| FE-2    | Create Team management UI                                                                  | 3 days           | BE-3                   |
+| FE-3    | Create Player management UI                                                                | 3 days           | BE-4                   |
+| FE-4    | Implement Champion performance display UI                                                  | 3 days           | BE-8, BE-13            |
+| FE-5    | Create visualization components for win rates and performance metrics                      | 2 days           | FE-4                   |
+| FE-6    | Implement manual analysis trigger button                                                   | 1 day            | BE-14                  |
+| FE-7    | Create Team-based draft setup UI                                                           | 3 days           | BE-11                  |
+| FE-8    | Implement Player information display in draft UI                                           | 2 days           | BE-12                  |
+| FE-9    | Create loading states for champion preference calculation                                  | 1 day            | FE-4, FE-6             |
+| FE-10   | Implement error handling for Riot API limitations                                          | 1 day            | FE-4, FE-6             |
+| FE-11   | Create responsive layouts for all new components                                           | 2 days           | FE-2, FE-3, FE-7, FE-8 |
 
 #### Data Tasks
 
@@ -748,25 +737,25 @@ Frontend -> User: Show Draft Board
 
 ### 5.1 Test Scenarios
 
-| Scenario ID | Description | Test Type | Priority |
-|-------------|-------------|-----------|----------|
-| TS-1 | Verify Riot Sign-On authentication flow | Integration | High |
-| TS-2 | Test team creation and management | Unit/Integration | High |
-| TS-3 | Test player addition and position assignment | Unit/Integration | High |
-| TS-4 | Verify Riot API integration for match history | Integration | High |
-| TS-5 | Test champion performance calculation algorithms | Unit | High |
-| TS-6 | Verify automatic champion preference ranking | Unit/Integration | High |
-| TS-7 | Test scheduled updates of champion preferences | Integration | Medium |
-| TS-8 | Verify caching of Riot API data | Unit/Integration | Medium |
-| TS-9 | Test manual trigger for match history analysis | Integration | Medium |
-| TS-10 | Verify performance metrics visualization | Unit | Medium |
-| TS-11 | Test handling of players with limited match history | Unit/Integration | Medium |
-| TS-12 | Verify handling of unavailable champions in preferences | Unit | Medium |
-| TS-13 | Test team-based draft creation | Integration | High |
-| TS-14 | Verify player information display during draft | E2E | High |
-| TS-15 | Test proper authorization for team management | Unit/Integration | High |
-| TS-16 | Verify error handling for Riot API rate limits | Integration | High |
-| TS-17 | Test data retention and cleanup for match history | Integration | Medium |
+| Scenario ID | Description                                                                                              | Test Type        | Priority |
+|-------------|----------------------------------------------------------------------------------------------------------|------------------|----------|
+| TS-1        | Verify Riot Sign-On authentication flow (see [RSO Integration Spec](./riot-sign-on-integration-spec.md)) | Integration      | High     |
+| TS-2        | Test team creation and management                                                                        | Unit/Integration | High     |
+| TS-3        | Test player addition and position assignment                                                             | Unit/Integration | High     |
+| TS-4        | Verify Riot API integration for match history                                                            | Integration      | High     |
+| TS-5        | Test champion performance calculation algorithms                                                         | Unit             | High     |
+| TS-6        | Verify automatic champion preference ranking                                                             | Unit/Integration | High     |
+| TS-7        | Test scheduled updates of champion preferences                                                           | Integration      | Medium   |
+| TS-8        | Verify caching of Riot API data                                                                          | Unit/Integration | Medium   |
+| TS-9        | Test manual trigger for match history analysis                                                           | Integration      | Medium   |
+| TS-10       | Verify performance metrics visualization                                                                 | Unit             | Medium   |
+| TS-11       | Test handling of players with limited match history                                                      | Unit/Integration | Medium   |
+| TS-12       | Verify handling of unavailable champions in preferences                                                  | Unit             | Medium   |
+| TS-13       | Test team-based draft creation                                                                           | Integration      | High     |
+| TS-14       | Verify player information display during draft                                                           | E2E              | High     |
+| TS-15       | Test proper authorization for team management                                                            | Unit/Integration | High     |
+| TS-16       | Verify error handling for Riot API rate limits                                                           | Integration      | High     |
+| TS-17       | Test data retention and cleanup for match history                                                        | Integration      | Medium   |
 
 ### 5.2 Test Data Requirements
 

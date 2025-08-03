@@ -1,0 +1,125 @@
+<div class="drafts-page">
+	<!-- Page Header -->
+	<div class="page-header">
+		<h1 class="page-title">
+			<i class="pi pi-users mr-3"></i>
+			Drafts
+		</h1>
+		<p class="page-description">
+			Create and manage your League of Legends draft sessions
+		</p>
+	</div>
+
+	<!-- Toast Messages -->
+	<p-toast position="top-right"></p-toast>
+
+	<!-- Main Content -->
+	<div class="page-content">
+
+		<!-- Create Draft Section - US-1 AC1: User can see "Create Draft" button -->
+		@if (!showCreateForm()) {
+			<div class="create-draft-section">
+				<p-card class="welcome-card">
+					<div class="welcome-content">
+						<div class="welcome-icon">
+							<i class="pi pi-plus-circle"></i>
+						</div>
+						<h2 class="welcome-title">Ready to Start Drafting?</h2>
+						<p class="welcome-text">
+							Create a new draft session to practice your champion selection strategies.
+							Choose from Tournament, Fearless, or Full Fearless draft modes.
+						</p>
+
+						<!-- US-1 AC1: "Create Draft" button -->
+						<p-button
+							label="Create Draft"
+							icon="pi pi-plus"
+							size="large"
+							class="create-draft-btn"
+							(click)="showCreateDraftForm()"
+						></p-button>
+					</div>
+				</p-card>
+
+				<!-- Draft Features Info -->
+				<div class="features-grid">
+					<div class="feature-card">
+						<div class="feature-icon tournament">
+							<i class="pi pi-trophy"></i>
+						</div>
+						<h3>Tournament Draft</h3>
+						<p>Standard competitive format with alternating bans and picks</p>
+					</div>
+
+					<div class="feature-card">
+						<div class="feature-icon fearless">
+							<i class="pi pi-shield"></i>
+						</div>
+						<h3>Fearless Draft</h3>
+						<p>Previous picks are banned in subsequent games</p>
+					</div>
+
+					<div class="feature-card">
+						<div class="feature-icon full-fearless">
+							<i class="pi pi-ban"></i>
+						</div>
+						<h3>Full Fearless</h3>
+						<p>Both picks and bans from previous games are unavailable</p>
+					</div>
+
+					<div class="feature-card">
+						<div class="feature-icon spectator">
+							<i class="pi pi-eye"></i>
+						</div>
+						<h3>Spectator Mode</h3>
+						<p>Share drafts with others using spectator links</p>
+					</div>
+				</div>
+			</div>
+		}
+
+		<!-- Draft Creation Form - US-1 AC2-6: Draft creation form with all features -->
+		@if (showCreateForm()) {
+			<div class="create-form-section">
+				<div class="form-header">
+					<h2 class="form-title">
+						<i class="pi pi-plus mr-2"></i>
+						Create New Draft
+					</h2>
+					<p class="form-subtitle">
+						Configure your draft settings and invite opponents
+					</p>
+				</div>
+
+				<app-draft-creation-form
+					(draftCreated)="onDraftCreated($event)"
+					(cancelled)="onFormCancelled()"
+				></app-draft-creation-form>
+			</div>
+		}
+
+		<!-- Recent Drafts Section (placeholder for future implementation) -->
+		@if (!showCreateForm()) {
+			<div class="recent-drafts-section">
+				<p-card>
+					<ng-template pTemplate="header">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="pi pi-history mr-2"></i>
+								Recent Drafts
+							</h3>
+						</div>
+					</ng-template>
+
+					<div class="empty-state">
+						<div class="empty-icon">
+							<i class="pi pi-inbox"></i>
+						</div>
+						<h4>No drafts yet</h4>
+						<p>Your recent draft sessions will appear here once you create your first draft.</p>
+					</div>
+				</p-card>
+			</div>
+		}
+	</div>
+</div>

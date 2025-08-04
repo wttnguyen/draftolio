@@ -1,0 +1,101 @@
+/* Header component specific styles */
+
+/* Ensure the header stays above other content */
+header
+{
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* Custom styling for the login button */
+.login-button
+{
+    transition: all 0.2s ease-in-out;
+}
+
+.login-button:hover
+{
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Active navigation link styling */
+a[routerLinkActive]
+{
+    transition: all 0.2s ease-in-out;
+}
+
+/* Ensure proper spacing for PrimeNG components */
+p-button
+{
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Custom user menu positioning */
+p-menu
+{
+    z-index: 1000;
+}
+
+/* Mobile menu animation */
+@media (max-width: 768px)
+{
+    .mobile-nav-enter
+    {
+        animation: slideDown 0.2s ease-out;
+    }
+
+    .mobile-nav-leave
+    {
+        animation: slideUp 0.2s ease-in;
+    }
+}
+
+@keyframes slideDown
+{
+    from
+    {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to
+    {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp
+{
+    from
+    {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to
+    {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+/* Ensure logo fallback styling */
+img[alt='Draftolio AI']
+{
+    object-fit: contain;
+}
+
+/* Focus states for accessibility */
+a:focus,
+button:focus
+{
+    outline: 2px solid #3B82F6;
+    outline-offset: 2px;
+}
+
+/* Smooth transitions for all interactive elements */
+a, button, .transition-colors
+{
+    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}

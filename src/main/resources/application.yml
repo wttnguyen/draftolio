@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: draftolio-ai
+  jpa:
+    open-in-view: false
+  docker:
+    compose:
+      enabled: false
+
+# League of Legends Assets Management Configuration
+lol:
+  assets:
+    versions-url: https://ddragon.leagueoflegends.com/api/versions.json
+    assets-base-url: https://ddragon.leagueoflegends.com/cdn/dragontail-{version}.tgz
+    cache-directory: assets/lol
+    enabled: true
+    request-timeout: 10s
+    download-timeout: 5m
+
+# Riot Sign-On (RSO) Configuration
+# Set to true for development to use mock authentication
+rso:
+  mock-enabled: true
+  
+  # RSO Client Configuration
+  client:
+    client-id: your_client_id_here
+    client-secret: your_client_secret_here
+    redirect-uri: http://localhost:8080/oauth2-callback
+    scopes: openid cpid offline_access
+  
+  # RSO Endpoints Configuration
+  endpoints:
+    base-url: https://auth.riotgames.com
+    authorization-path: /authorize
+    token-path: /token
+    user-info-path: /userinfo
+    jwks-path: /jwks.json
+  
+  # RSO Token Management Configuration
+  tokens:
+    refresh-buffer: PT5M
+    max-refresh-retries: 3
+    request-timeout: PT10S

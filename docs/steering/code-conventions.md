@@ -228,34 +228,44 @@ public Document findById(Long id) {
 
 ### Logging
 
-1. **Log Levels**:
+1. **Logger Declaration**:
+    - Prefer Lombok `@Slf4j` annotation over traditional Logger declarations
+    - Use `log` as the logger variable name (automatically provided by Lombok)
+    - Avoid manual Logger instantiation with `LoggerFactory.getLogger()`
+
+2. **Log Levels**:
    - ERROR: Use for errors that need immediate attention
    - WARN: Use for potential problems that don't prevent normal operation
    - INFO: Use for significant events in normal operation
    - DEBUG: Use for detailed information useful for debugging
    - TRACE: Use for the most detailed information
 
-2. **Log Messages**:
+3. **Log Messages**:
    - Include relevant context in log messages
    - Use parameterized logging to avoid string concatenation
    - Don't log sensitive information
 
-3. **Exception Logging**:
+4. **Exception Logging**:
    - Log exceptions with stack traces
    - Include the cause of the exception
 
 Example:
 
 ```java
-public void processDocument(Document document) {
-    logger.info("Processing document: {}", document.getId());
+@Slf4j
+@Service
+public class DocumentService {
     
-    try {
-        // Process document
-        logger.debug("Document processed successfully: {}", document.getId());
-    } catch (Exception e) {
-        logger.error("Failed to process document: {}", document.getId(), e);
-        throw new DocumentProcessingException("Failed to process document", e);
+    public void processDocument(Document document) {
+        log.info("Processing document: {}", document.getId());
+        
+        try {
+            // Process document
+            log.debug("Document processed successfully: {}", document.getId());
+        } catch (Exception e) {
+            log.error("Failed to process document: {}", document.getId(), e);
+            throw new DocumentProcessingException("Failed to process document", e);
+        }
     }
 }
 ```

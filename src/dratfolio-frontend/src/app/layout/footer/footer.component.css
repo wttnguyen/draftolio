@@ -1,0 +1,171 @@
+/* Footer component specific styles */
+
+/* Ensure footer stays at bottom of page */
+footer
+{
+    margin-top: auto;
+}
+
+/* Social media icons hover effects */
+.social-links a
+{
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover
+{
+    transform: translateY(-2px);
+}
+
+/* Footer link hover effects */
+footer a
+{
+    position: relative;
+    transition: all 0.2s ease-in-out;
+}
+
+footer a:hover
+{
+    text-decoration: none;
+}
+
+footer a:not(.no-underline):hover::after
+{
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(1);
+    transition: transform 0.2s ease-in-out;
+}
+
+footer a:not(.no-underline)::after
+{
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Disclaimer box styling */
+.disclaimer-box
+{
+    background: linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.9) 100%);
+    border: 1px solid rgba(75, 85, 99, 0.3);
+}
+
+/* Logo fallback styling */
+footer img[alt='Draftolio AI']
+{
+    object-fit: contain;
+    filter: brightness(0.9);
+    transition: filter 0.2s ease-in-out;
+}
+
+footer img[alt='Draftolio AI']:hover
+{
+    filter: brightness(1);
+}
+
+/* Grid responsive adjustments */
+@media (max-width: 768px)
+{
+    .footer-grid
+    {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .footer-links
+    {
+        text-align: center;
+    }
+
+    .social-links
+    {
+        justify-content: center;
+    }
+}
+
+/* Focus states for accessibility */
+footer a:focus
+{
+    outline: 2px solid #3B82F6;
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* Smooth scrolling for anchor links */
+html
+{
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar
+{
+    width: 8px;
+}
+
+::-webkit-scrollbar-track
+{
+    background: #1F2937;
+}
+
+::-webkit-scrollbar-thumb
+{
+    background: #4B5563;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover
+{
+    background: #6B7280;
+}
+
+/* Print styles */
+@media print
+{
+    footer
+    {
+        display: none;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more)
+{
+    footer
+    {
+        border-top: 2px solid #FFFFFF;
+    }
+
+    .disclaimer-box
+    {
+        border: 2px solid #FFFFFF;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce)
+{
+    footer a,
+    .social-links a,
+    footer img
+    {
+        transition: none;
+    }
+
+    footer a:hover
+    {
+        transform: none;
+    }
+}

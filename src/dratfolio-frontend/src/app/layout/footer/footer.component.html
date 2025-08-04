@@ -1,0 +1,138 @@
+<footer class="bg-gray-900 text-white">
+	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+		<!-- Main footer content -->
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+			<!-- Company Info -->
+			<div class="col-span-1 lg:col-span-1">
+				<div class="flex items-center space-x-2 mb-4">
+					<!--          <img -->
+					<!--            src="/assets/logo.png" -->
+					<!--            alt="Draftolio AI" -->
+					<!--            class="h-8 w-8"-->
+					<!--            onerror="this.style.display='none'"-->
+					<!--          >-->
+					<span class="text-xl font-bold">Draftolio AI</span>
+				</div>
+				<p class="text-gray-400 text-sm mb-4">
+					Advanced AI-powered draft analysis and team composition optimization for League of Legends.
+				</p>
+				<div class="flex space-x-4">
+					<a href="#"
+					   class="text-gray-400 hover:text-white transition-colors duration-200"
+					   aria-label="Twitter">
+						<i class="pi pi-twitter text-xl"></i>
+					</a>
+					<a href="#"
+					   class="text-gray-400 hover:text-white transition-colors duration-200"
+					   aria-label="Discord">
+						<i class="pi pi-discord text-xl"></i>
+					</a>
+					<a href="#"
+					   class="text-gray-400 hover:text-white transition-colors duration-200"
+					   aria-label="GitHub">
+						<i class="pi pi-github text-xl"></i>
+					</a>
+				</div>
+			</div>
+
+			<!-- Company Links -->
+			<div>
+				<h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">Company</h3>
+				<ul class="space-y-2">
+					@for (link of footerLinks.company; track link.route) {
+						<li>
+							<a
+								[routerLink]="link.route"
+								class="text-gray-400 hover:text-white transition-colors duration-200 text-sm"
+							>
+								{{ link.label }}
+							</a>
+						</li>
+					}
+				</ul>
+			</div>
+
+			<!-- Support Links -->
+			<div>
+				<h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">Support</h3>
+				<ul class="space-y-2">
+					@for (link of footerLinks.support; track link.route) {
+						<li>
+							<a
+								[routerLink]="link.route"
+								class="text-gray-400 hover:text-white transition-colors duration-200 text-sm"
+							>
+								{{ link.label }}
+							</a>
+						</li>
+					}
+				</ul>
+			</div>
+
+			<!-- Legal Links -->
+			<div>
+				<h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">Legal</h3>
+				<ul class="space-y-2">
+					@for (link of footerLinks.legal; track link.route) {
+						<li>
+							<a
+								[routerLink]="link.route"
+								class="text-gray-400 hover:text-white transition-colors duration-200 text-sm"
+							>
+								{{ link.label }}
+							</a>
+						</li>
+					}
+				</ul>
+			</div>
+		</div>
+
+		<!-- Divider -->
+		<div class="border-t border-gray-800 mt-8 pt-8">
+
+			<!-- Riot Games Disclaimer -->
+			<div class="mb-6 p-4 bg-gray-800 rounded-lg">
+				<h4 class="text-sm font-semibold text-gray-300 mb-2">Riot Games Disclaimer</h4>
+				<p class="text-xs text-gray-400 leading-relaxed">
+					Draftolio AI isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games
+					or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all
+					associated properties are trademarks or registered trademarks of Riot Games, Inc.
+				</p>
+				<p class="text-xs text-gray-400 leading-relaxed mt-2">
+					League of Legends © Riot Games, Inc. All rights reserved. This product is not affiliated with,
+					endorsed, sponsored, or specifically approved by Riot Games, Inc.
+				</p>
+			</div>
+
+			<!-- Copyright and Legal Information -->
+			<div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+				<div class="text-center md:text-left">
+					<p class="text-xs text-gray-400">
+						© {{ currentYear }} Draftolio AI. All rights reserved.
+					</p>
+					<p class="text-xs text-gray-500 mt-1">
+						Draftolio AI™ is a trademark of Draftolio AI, Inc.
+					</p>
+				</div>
+
+				<div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-xs text-gray-400">
+					<span>Made with ❤️ for the League of Legends community</span>
+					<span class="hidden md:inline">•</span>
+					<span>Version 1.0.0</span>
+				</div>
+			</div>
+
+			<!-- Additional Legal Notice -->
+			<div class="mt-4 pt-4 border-t border-gray-800">
+				<p class="text-xs text-gray-500 text-center">
+					This website uses cookies to enhance user experience and analyze website traffic.
+					By using this website, you agree to our use of cookies as described in our
+					<a routerLink="/cookies"
+					   class="text-blue-400 hover:text-blue-300 underline">Cookie Policy</a>.
+				</p>
+			</div>
+		</div>
+	</div>
+</footer>

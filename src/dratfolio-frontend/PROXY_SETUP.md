@@ -18,37 +18,31 @@ The main proxy configuration file that defines which requests should be proxied 
     "/api/*": {
         "target": "http://localhost:8080",
         "secure": false,
-        "changeOrigin": true,
         "logLevel": "debug"
     },
     "/auth/*": {
         "target": "http://localhost:8080",
         "secure": false,
-        "changeOrigin": true,
         "logLevel": "debug"
     },
     "/oauth2/*": {
         "target": "http://localhost:8080",
         "secure": false,
-        "changeOrigin": true,
         "logLevel": "debug"
     },
     "/oauth2-callback": {
         "target": "http://localhost:8080",
         "secure": false,
-        "changeOrigin": true,
         "logLevel": "debug"
     },
     "/login/oauth2/*": {
         "target": "http://localhost:8080",
         "secure": false,
-        "changeOrigin": true,
         "logLevel": "debug"
     },
     "/actuator/*": {
         "target": "http://localhost:8080",
         "secure": false,
-        "changeOrigin": true,
         "logLevel": "debug"
     }
 }
@@ -69,7 +63,6 @@ The following endpoint patterns are automatically proxied to the backend:
 
 - **`target`**: The backend server URL (`http://localhost:8080`)
 - **`secure`**: Set to `false` for HTTP connections (use `true` for HTTPS)
-- **`changeOrigin`**: Set to `true` to change the origin header to match the target
 - **`logLevel`**: Set to `debug` to see proxy logs in the console
 
 ## Development Usage

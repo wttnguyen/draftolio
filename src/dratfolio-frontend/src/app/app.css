@@ -1,1 +1,14 @@
-/* App component styles */
+/* App component styles - Layout styles moved to inline TailwindCSS classes */
+
+/* Global styles for the application */
+*
+{
+    box-sizing: border-box;
+}
+
+html, body
+{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
